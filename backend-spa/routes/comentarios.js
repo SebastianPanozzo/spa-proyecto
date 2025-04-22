@@ -9,4 +9,7 @@ router.get('/', comentariosController.obtenerComentarios);
 // 🔒 Solo usuarios logueados pueden comentar
 router.post('/', verificarToken, comentariosController.crearComentario);
 
+// 🔒 Solo usuarios logueados pueden eliminar comentarios
+router.delete('/:id', verificarToken, comentariosController.eliminarComentario);
+
 module.exports = router;

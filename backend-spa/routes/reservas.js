@@ -9,6 +9,9 @@ router.post('/', verificarToken, reservasController.crearReserva);
 // 📌 Obtener todas las reservas (solo administradores)
 router.get('/', verificarToken, soloAdmin, reservasController.obtenerReservas);
 
+// 📌 Verificar disponibilidad de horarios (usuarios logueados)
+router.get('/disponibilidad', verificarToken, reservasController.verificarDisponibilidad);
+
 // 📌 Actualizar una reserva por ID (solo administradores)
 router.put('/:id', verificarToken, soloAdmin, reservasController.actualizarReserva);
 

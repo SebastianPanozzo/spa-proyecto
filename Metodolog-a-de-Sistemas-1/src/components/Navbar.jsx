@@ -45,7 +45,7 @@ const Navbar = () => {
           </ul>
 
           {/* Login / Logout */}
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-center">
             {!usuario ? (
               <>
                 <li className="nav-item"><Link className="nav-link" to="/login">Iniciar sesión</Link></li>
@@ -56,8 +56,11 @@ const Navbar = () => {
                 {usuario.rol === "admin" && (
                   <li className="nav-item"><Link className="nav-link" to="/admin">Panel Admin</Link></li>
                 )}
+                <li className="nav-item me-2">
+                  <span className="nav-link text-muted">Hola, {usuario.nombre || 'Usuario'}</span>
+                </li>
                 <li className="nav-item">
-                  <button className="btn btn-outline-danger btn-sm ms-2" onClick={handleLogout}>
+                  <button className="btn btn-outline-danger btn-sm" onClick={handleLogout}>
                     Cerrar sesión
                   </button>
                 </li>

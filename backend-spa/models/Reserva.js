@@ -20,13 +20,16 @@ const reservaSchema = new mongoose.Schema({
   },
   estado: {
     type: String,
-    enum: ['pendiente', 'confirmada', 'cancelada'],
-    default: 'pendiente'
+    enum: ['confirmada'],
+    default: 'confirmada'
+  },
+  esGrupal: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 
-// 🔒 Prevenir duplicados por servicio, fecha y hora
-// ⚠️ Asegurate de que la colección esté vacía o sin duplicados antes de crear este índice único
-reservaSchema.index({ servicio: 1, fecha: 1, hora: 1 }, { unique: true });
+// Índice para buscar reservas más eficientemente
+reservaSchema.index({ servicio: 1, fecha: 1, hora: 1 });
 
 module.exports = mongoose.model('Reserva', reservaSchema);

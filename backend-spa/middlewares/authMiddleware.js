@@ -14,6 +14,7 @@ const verificarToken = (req, res, next) => {
   const token = authHeader.split(" ")[1];
 
   try {
+    // Verifica el token usando la clave secreta
     const decoded = jwt.verify(token, process.env.JWT_SECRET || "secreto123");
     req.usuario = decoded; // Guarda los datos del usuario en la request
     next(); // Continúa con el siguiente middleware o controlador

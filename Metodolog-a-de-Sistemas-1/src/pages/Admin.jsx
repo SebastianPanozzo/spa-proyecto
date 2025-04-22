@@ -1,9 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useEffect } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Admin = () => {
-  const [reservas, setReservas] = useState([]);
   const navigate = useNavigate();
   const usuario = JSON.parse(localStorage.getItem("usuario"));
 
@@ -12,64 +10,51 @@ const Admin = () => {
     if (!usuario || usuario.rol !== 'admin') {
       alert("Acceso denegado");
       navigate('/');
-      return;
     }
-
-    const fetchReservas = async () => {
-      try {
-        const res = await axios.get('http://localhost:3000/api/reservas');
-        setReservas(res.data);
-      } catch (error) {
-        console.error("Error al obtener reservas", error);
-      }
-    };
-
-    fetchReservas();
   }, [navigate, usuario]);
-
-  const handleEliminar = async (id) => {
-    if (!window.confirm("¿Seguro que querés eliminar esta reserva?")) return;
-    try {
-      await axios.delete(`http://localhost:3000/api/reservas/${id}`);
-      setReservas(reservas.filter(r => r._id !== id));
-    } catch (error) {
-      alert("Error al eliminar");
-    }
-  };
 
   return (
     <div className="container mt-5">
       <h2 className="text-center mb-4">Panel de Administración</h2>
-      {reservas.length === 0 ? (
-        <p className="text-center">No hay reservas cargadas.</p>
-      ) : (
-        <table className="table table-striped table-bordered">
-          <thead className="table-dark">
-            <tr>
-              <th>Cliente</th>
-              <th>Servicio</th>
-              <th>Fecha</th>
-              <th>Hora</th>
-              <th>Acciones</th>
-            </tr>
-          </thead>
-          <tbody>
-            {reservas.map((r, i) => (
-              <tr key={i}>
-                <td>{r.cliente?.nombre || r.cliente}</td>
-                <td>{r.servicio}</td>
-                <td>{new Date(r.fecha).toLocaleDateString()}</td>
-                <td>{r.hora}</td>
-                <td>
-                  <button className="btn btn-sm btn-danger" onClick={() => handleEliminar(r._id)}>
-                    Eliminar
-                  </button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
+      <div className="row justify-content-center">
+        <div className="col-md-4 mb-3">
+          <div className="card text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Reservas</h5>
+              <p className="card-text">Ver, administrar y eliminar reservas.</p>
+              <Link to="/admin/reservas" className="btn btn-primary">Ir a Reservas</Link>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4 mb-3">
+          <div className="card text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Clientes</h5>
+              <p className="card-text">Gestionar datos de los clientes registrados.</p>
+              <Link to="/admin/clientes" className="btn btn-primary">Ir a Clientes</Link>
+            </div>
+          </div>
+        </div>
+        <div className="col-md-4 mb-3">
+          <div className="card text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Comentarios</h5>
+              <p className="card-text">Leer y eliminar comentarios de usuarios.</p>
+              <Link to="/admin/comentarios" className="btn btn-primary">Ir a Comentarios</Link>
+            </div>
+          </div>
+        </div>
+        {/* Nueva tarjeta para Mensajes de Contacto */}
+        <div className="col-md-4 mb-3">
+          <div className="card text-center shadow">
+            <div className="card-body">
+              <h5 className="card-title">Mensajes de Contacto</h5>
+              <p className="card-text">Ver y gestionar mensajes recibidos de los usuarios.</p>
+              <Link to="/admin/contacto" className="btn btn-primary">Ir a Mensajes</Link>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

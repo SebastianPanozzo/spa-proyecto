@@ -7,17 +7,25 @@ require('dotenv').config();
 const app = express();
 
 // Middlewares
-app.use(cors({ origin: 'http://localhost:5173' })); // Ajusta esto si tu frontend está en otro dominio
+app.use(cors({ origin: process.env.FRONTEND_URL || 'http://localhost:5173' })); // Ajusta el origen desde una variable de entorno
 app.use(express.json());
 
 // Rutas
 const clientesRoutes = require('./routes/clientes');
 const reservasRoutes = require('./routes/reservas');
 const comentariosRoutes = require('./routes/comentarios');
+const contactoRoutes = require('./routes/contacto'); // Nueva ruta importada
 
 app.use('/api/clientes', clientesRoutes);
 app.use('/api/reservas', reservasRoutes);
 app.use('/api/comentarios', comentariosRoutes);
+app.use('/api/contacto', contactoRoutes); // Nueva ruta agregada
+
+// Middleware de manejo de errores global
+app.use((err, req, res, next) => {
+  console.error('❌ Error no manejado:', err);
+  res.status(500).json({ mensaje: 'Algo salió mal en el servidor' });
+});
 
 // Conexión a MongoDB
 const mongoUri = process.env.MONGO_URI;
